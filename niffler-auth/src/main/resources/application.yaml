@@ -63,7 +63,7 @@ spring:
   datasource:
     url: 'jdbc:postgresql://localhost:5432/niffler-auth'
     username: postgres
-    password: secret
+    password: 12345
 niffler-front:
   base-uri: 'http://127.0.0.1:3000'
 niffler-auth:
@@ -85,7 +85,7 @@ spring:
   datasource:
     url: 'jdbc:postgresql://niffler-all-db:5432/niffler-auth'
     username: postgres
-    password: secret
+    password: 12345
 niffler-front:
   base-uri: 'http://frontend.niffler.dc'
 niffler-auth:
