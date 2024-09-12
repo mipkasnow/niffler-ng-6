@@ -13,7 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(BrowserExtension.class)
 public class SpendingWebTest {
 
-
   private static final Config CFG = Config.getInstance();
 
   @Spending(
