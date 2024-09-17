@@ -20,7 +20,7 @@ public class CategoryExtension implements BeforeEachCallback, ParameterResolver,
                 .ifPresent(anno -> {
                     CategoryJson category = new CategoryJson(
                             null,
-                            faker.food().dish(),
+                            anno.title().isEmpty() ? faker.food().dish() : anno.title(),
                             anno.username(),
                             false
                     );
@@ -56,20 +56,12 @@ public class CategoryExtension implements BeforeEachCallback, ParameterResolver,
     @Override
     public void afterTestExecution(ExtensionContext context) throws Exception {
         CategoryJson categoryFromStore = context.getStore(NAMESPACE).get(context.getUniqueId(), CategoryJson.class);
-        //потому что в сторе информация о категории может быть неактуальная из-за действий в тесте.
-        CategoryJson categoryFromApi= spendApiClient.getCategories(categoryFromStore.username())
-                .stream()
-                .filter(c -> c.id().equals(categoryFromStore.id()))
-                .findFirst()
-                .get();
 
-        if (!categoryFromApi.archived()) {
-            spendApiClient.updateCategory(new CategoryJson(
-                    categoryFromStore.id(),
-                    categoryFromStore.name(),
-                    categoryFromStore.username(),
-                    true
-            ));
-        }
+        spendApiClient.updateCategory(new CategoryJson(
+                categoryFromStore.id(),
+                categoryFromStore.name(),
+                categoryFromStore.username(),
+                true
+        ));
     }
 }

@@ -15,5 +15,7 @@ public @interface Category {
 
     String username();
 
+    String title() default "";
+
     boolean archived() default false;
 }
