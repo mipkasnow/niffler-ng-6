@@ -11,7 +11,7 @@ public class AllPeoplePage {
     private final ElementsCollection allPeopleRows = $$("#all tr");
 
     public AllPeoplePage assertThatOutcomeRequestIsPresent(String name) {
-        allPeopleRows.filterBy(text(name)).first().$(byText("Waiting...")).should(appear);
+        allPeopleRows.findBy(text(name)).$(byText("Waiting...")).should(appear);
         return this;
     }
 }

@@ -53,8 +53,6 @@ public class UsersQueueExtension implements
     public void beforeTestExecution(ExtensionContext context) {
         Arrays.stream(context.getRequiredTestMethod().getParameters())
                 .filter(p -> AnnotationSupport.isAnnotated(p, UserType.class))
-                .toList()
-                .stream()
                 .map(p -> p.getAnnotation(UserType.class))
                 .forEach(ut -> {
                     Optional<StaticUser> user = Optional.empty();
@@ -62,12 +60,7 @@ public class UsersQueueExtension implements
                     UserType.Type type = ut.value();
 
                     while (user.isEmpty() && sw.getTime(TimeUnit.SECONDS) < 30) {
-                        user = switch (type) {
-                            case EMPTY -> Optional.ofNullable(EMPTY_USERS.poll());
-                            case WITH_FRIEND -> Optional.ofNullable(WITH_FRIEND_USERS.poll());
-                            case WITH_INCOME_REQUEST -> Optional.ofNullable(WITH_INCOME_REQUEST_USERS.poll());
-                            case WITH_OUTCOME_REQUEST -> Optional.ofNullable(WITH_OUTCOME_REQUEST_USERS.poll());
-                        };
+                        user = Optional.ofNullable(getQueueByUserType(type).poll());
                     }
                     Allure.getLifecycle().updateTestCase(testCase ->
                             testCase.setStart(new Date().getTime())
@@ -96,13 +89,7 @@ public class UsersQueueExtension implements
 
         for (Map.Entry<UserType, StaticUser> e: users.entrySet()) {
             UserType.Type type = e.getKey().value();
-
-            switch (type) {
-                case EMPTY -> EMPTY_USERS.add(e.getValue());
-                case WITH_FRIEND ->  WITH_FRIEND_USERS.add(e.getValue());
-                case WITH_INCOME_REQUEST -> WITH_INCOME_REQUEST_USERS.add(e.getValue());
-                case WITH_OUTCOME_REQUEST -> WITH_OUTCOME_REQUEST_USERS.add(e.getValue());
-            }
+            getQueueByUserType(type).add(e.getValue());
         }
     }
 
@@ -116,5 +103,16 @@ public class UsersQueueExtension implements
     public StaticUser resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         return (StaticUser) extensionContext.getStore(NAMESPACE).get(extensionContext.getUniqueId(), Map.class)
                 .get(parameterContext.findAnnotation(UserType.class).get());
+    }
+    
+    private Queue<StaticUser> getQueueByUserType(UserType.Type type) {
+        Queue<StaticUser> queue = null;
+        switch (type) {
+            case EMPTY -> queue = EMPTY_USERS;
+            case WITH_FRIEND -> queue = WITH_FRIEND_USERS;
+            case WITH_INCOME_REQUEST -> queue = WITH_INCOME_REQUEST_USERS;
+            case WITH_OUTCOME_REQUEST -> queue = WITH_OUTCOME_REQUEST_USERS;
+        }
+        return queue;
     }
 }
