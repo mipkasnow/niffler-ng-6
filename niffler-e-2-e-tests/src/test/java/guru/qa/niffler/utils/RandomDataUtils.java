@@ -27,7 +27,7 @@ public class RandomDataUtils {
     }
 
     public static String randomCategoryName() {
-        return categories.get(faker.random().nextInt(0 ,categories.size()));
+        return categories.get(faker.random().nextInt(0 , categories.size() - 1));
     }
 
 
