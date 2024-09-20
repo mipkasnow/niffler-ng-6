@@ -1,20 +1,19 @@
 package guru.qa.niffler.test.web;
 
 import com.codeborne.selenide.Selenide;
-import com.github.javafaker.Faker;
 import guru.qa.niffler.config.Config;
 import guru.qa.niffler.page.LoginPage;
+import guru.qa.niffler.utils.RandomDataUtils;
 import org.junit.jupiter.api.Test;
 
 public class RegistrationLoginTest extends BaseWebTest{
 
     private static final Config CFG = Config.getInstance();
-    private final Faker faker = new Faker();
     private static final String defPassword = "12345";
 
     @Test
     void shouldRegisterNewUser() {
-        String username = faker.name().firstName();
+        String username = RandomDataUtils.randomUsername();
 
         Selenide.open(CFG.frontUrl(), LoginPage.class)
                 .goToRegisterPage()
@@ -45,7 +44,7 @@ public class RegistrationLoginTest extends BaseWebTest{
                 .goToRegisterPage()
                 .setUsername(username)
                 .setPassword(defPassword)
-                .setPasswordSubmit(faker.funnyName().name())
+                .setPasswordSubmit(RandomDataUtils.randomName())
                 .clickSubmitButton()
                 .passwordsNotEqualErrorMsgShouldAppear();
     }
@@ -65,7 +64,7 @@ public class RegistrationLoginTest extends BaseWebTest{
 
         Selenide.open(CFG.frontUrl(), LoginPage.class)
                 .setUsername(username)
-                .setPassword(faker.funnyName().name())
+                .setPassword(RandomDataUtils.randomName())
                 .clickSubmitButton()
                 .badCredentialsErrorShouldAppear();
     }

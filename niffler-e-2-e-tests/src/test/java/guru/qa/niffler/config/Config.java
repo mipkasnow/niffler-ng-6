@@ -11,4 +11,11 @@ public interface Config {
   String spendUrl();
 
   String ghUrl();
+
+  String userdataUrl();
+
+  String gatewayUrl();
+
+  String authUrl();
+
 }
