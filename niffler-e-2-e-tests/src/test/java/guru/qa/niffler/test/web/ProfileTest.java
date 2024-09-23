@@ -3,6 +3,7 @@ package guru.qa.niffler.test.web;
 import com.codeborne.selenide.Selenide;
 import guru.qa.niffler.config.Config;
 import guru.qa.niffler.jupiter.annotation.Category;
+import guru.qa.niffler.jupiter.annotation.User;
 import guru.qa.niffler.model.CategoryJson;
 import guru.qa.niffler.page.LoginPage;
 import org.junit.jupiter.api.Test;
@@ -12,10 +13,12 @@ public class ProfileTest extends BaseWebTest{
     private static final Config CFG = Config.getInstance();
     private static final String defPassword = "12345";
 
-    @Category(
-            username = "duck",
-            title = "спонтанные траты",
-            archived = true
+    @User(
+        username = "duck",
+        categories = @Category(
+                title = "слатенькое",
+                archived = true
+        )
     )
     @Test
     void archivedCategoryShouldPresentInCategoriesList(CategoryJson category) {
@@ -28,8 +31,9 @@ public class ProfileTest extends BaseWebTest{
 
     }
 
-    @Category(
-            username = "misha"
+    @User(
+        username = "misha",
+        categories = @Category()
     )
     @Test
     void activeCategoryShouldPresentInCategoriesList(CategoryJson category) {

@@ -1,7 +1,6 @@
 package guru.qa.niffler.page;
 
 import com.codeborne.selenide.SelenideElement;
-import com.github.javafaker.Faker;
 import guru.qa.niffler.config.Config;
 
 import static com.codeborne.selenide.Condition.appear;
@@ -19,8 +18,6 @@ public class RegisterPage {
     private final SelenideElement successRegistrationMsg = $(withText("Congratulations! You've registered!"));
     private final SelenideElement signInAfterSuccessRegistrationBtn = $(format("[href*='%s']", CFG.frontUrl()));
     private final SelenideElement passwordsNotEqualErrorMsg = $(withText("Passwords should be equal"));
-
-    private final Faker faker = new Faker();
 
     private static final String userAlreadyExistErrorMsgStr = "Username `%s` already exists";
 

@@ -26,8 +26,9 @@ public class MainPage {
     return new EditSpendingPage();
   }
 
-  public void checkThatTableContainsSpending(String spendingDescription) {
+  public MainPage checkThatTableContainsSpending(String spendingDescription) {
     tableRows.find(text(spendingDescription)).should(visible);
+    return this;
   }
 
   public ProfilePage openProfileViaUrl() {
