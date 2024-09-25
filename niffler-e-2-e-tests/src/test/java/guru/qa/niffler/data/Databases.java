@@ -20,7 +20,7 @@ public class Databases {
         key -> {
           PGSimpleDataSource ds = new PGSimpleDataSource();
           ds.setUser("postgres");
-          ds.setPassword("secret");
+          ds.setPassword("12345");
           ds.setUrl(key);
           return ds;
         }
