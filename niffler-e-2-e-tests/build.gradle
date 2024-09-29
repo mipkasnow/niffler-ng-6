@@ -10,6 +10,7 @@ buildscript {
         slf4jVersion = '2.0.9'
         springJdbcVersion = '6.1.12'
         springCryptoVersion = '6.3.1'
+        atomicosVersion = '6.0.0'
         p6spyVersion = '3.9.1'
         hibernateVersion = '6.6.0.Final'
         kafkaClientsVersion = '3.8.0'
@@ -79,6 +80,9 @@ dependencies {
     testImplementation "p6spy:p6spy:${p6spyVersion}"
     testImplementation "org.hibernate:hibernate-core:${hibernateVersion}"
     testImplementation "org.springframework.security:spring-security-crypto:${springCryptoVersion}"
+    testImplementation "com.atomikos:transactions-jta:${atomicosVersion}:jakarta"
+    testImplementation "com.atomikos:transactions-hibernate4:${atomicosVersion}:jakarta"
+    testImplementation "com.atomikos:transactions-jdbc:${atomicosVersion}"
     // Allure
     testImplementation "io.qameta.allure:allure-attachments:${allureVersion}"
     testImplementation("io.qameta.allure:allure-junit5:${allureVersion}") {
