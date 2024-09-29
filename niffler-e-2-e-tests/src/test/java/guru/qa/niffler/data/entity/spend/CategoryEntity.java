@@ -23,4 +23,14 @@ public class CategoryEntity implements Serializable {
     ce.setArchived(json.archived());
     return ce;
   }
+
+  @Override
+  public String toString() {
+    return "CategoryEntity{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", username='" + username + '\'' +
+            ", archived=" + archived +
+            '}';
+  }
 }
