@@ -8,6 +8,7 @@ import guru.qa.niffler.data.entity.spend.SpendEntity;
 import guru.qa.niffler.model.CategoryJson;
 import guru.qa.niffler.model.SpendJson;
 
+import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,6 +18,7 @@ import static guru.qa.niffler.data.Databases.transaction;
 public class SpendDbClient {
 
     private static final Config CFG = Config.getInstance();
+    private static final int TRANSACTION_ISOLATION_LEVEL = Connection.TRANSACTION_READ_COMMITTED;
 
     public SpendJson createSpend(SpendJson spend) {
         return transaction(connection -> {
@@ -31,7 +33,8 @@ public class SpendDbClient {
                             new SpendDaoJdbc(connection).create(spendEntity)
                     );
                 },
-                CFG.spendJdbcUrl()
+                CFG.spendJdbcUrl(),
+                TRANSACTION_ISOLATION_LEVEL
         );
     }
 
@@ -40,7 +43,8 @@ public class SpendDbClient {
                     CategoryEntity categoryEntity = CategoryEntity.fromJson(category);
                     new CategoryDaoJdbc(connection).deleteCategory(categoryEntity);
                 },
-                CFG.spendJdbcUrl()
+                CFG.spendJdbcUrl(),
+                TRANSACTION_ISOLATION_LEVEL
         );
     }
 
@@ -51,7 +55,8 @@ public class SpendDbClient {
                             .map(CategoryJson::fromEntity)
                             .toList();
                 },
-                CFG.spendJdbcUrl()
+                CFG.spendJdbcUrl(),
+                TRANSACTION_ISOLATION_LEVEL
         );
 
     }
@@ -60,21 +65,21 @@ public class SpendDbClient {
         return transaction(connection -> {
                     return new CategoryDaoJdbc(connection).findCategoryByUsernameAndCategoryName(username, categoryName)
                             .map(CategoryJson::fromEntity);
-                }, CFG.spendJdbcUrl()
+                }, CFG.spendJdbcUrl(), TRANSACTION_ISOLATION_LEVEL
         );
     }
 
     public Optional<SpendJson> findSpendById(UUID id) {
         return transaction(connection -> {
                     return new SpendDaoJdbc(connection).findSpendById(id).map(SpendJson::fromEntity);
-                }, CFG.spendJdbcUrl()
+                }, CFG.spendJdbcUrl(), TRANSACTION_ISOLATION_LEVEL
         );
     }
 
     public void deleteSpend(SpendJson spend) {
         transaction(connection -> {
                     new SpendDaoJdbc(connection).deleteSpend(SpendEntity.fromJson(spend));
-                }, CFG.spendJdbcUrl()
+                }, CFG.spendJdbcUrl(), TRANSACTION_ISOLATION_LEVEL
         );
     }
 
@@ -84,7 +89,7 @@ public class SpendDbClient {
                             .stream()
                             .map(SpendJson::fromEntity)
                             .toList();
-                }, CFG.spendJdbcUrl()
+                }, CFG.spendJdbcUrl(), TRANSACTION_ISOLATION_LEVEL
         );
 
     }
@@ -94,7 +99,7 @@ public class SpendDbClient {
                     return new CategoryDaoJdbc(connection).findCategoryByUsernameAndCategoryName(category.username(), category.name())
                             .map(CategoryJson::fromEntity)
                             .orElseGet(() -> CategoryJson.fromEntity(new CategoryDaoJdbc(connection).create(CategoryEntity.fromJson(category))));
-                }, CFG.spendJdbcUrl()
+                }, CFG.spendJdbcUrl(), TRANSACTION_ISOLATION_LEVEL
         );
     }
 }
