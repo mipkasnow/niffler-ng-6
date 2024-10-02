@@ -43,8 +43,8 @@ public class UserEntity implements Serializable {
             ", firstname='" + firstname + '\'' +
             ", surname='" + surname + '\'' +
             ", fullname='" + fullname + '\'' +
-            ", photo=" + Arrays.toString(photo) +
-            ", photoSmall=" + Arrays.toString(photoSmall) +
+            ", photo=" + Arrays.toString(photo).substring(0, 4) +
+            ", photoSmall=" + Arrays.toString(photoSmall).substring(0, 4) +
             '}';
   }
 

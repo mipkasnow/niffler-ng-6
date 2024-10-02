@@ -12,4 +12,13 @@ public class AuthorityEntity implements Serializable {
   private UUID id;
   private Authority authority;
   private UUID userId;
+
+  @Override
+  public String toString() {
+    return "AuthorityEntity{" +
+            "id=" + id +
+            ", authority=" + authority +
+            ", userId=" + userId +
+            '}';
+  }
 }
